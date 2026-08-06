@@ -10,9 +10,9 @@ services:
     environment:
       - MODEL_API_KEY=${MODEL_API_KEY}
       - JWT_SECRET=${JWT_SECRET}
-      - ADMIN_PASSWORD=${ADMIN_PASSWORD:-admin123}
-      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD:-kb_root_pass_2026}
-      - MYSQL_URL=mysql+pymysql://root:${MYSQL_ROOT_PASSWORD:-kb_root_pass_2026}@mysql:3306/knowledge_base?charset=utf8mb4
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD:?请先 cp .env.example .env 并设置 ADMIN_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD:?请先 cp .env.example .env 并设置 MYSQL_ROOT_PASSWORD}
+      - MYSQL_URL=mysql+pymysql://root:${MYSQL_ROOT_PASSWORD:?请设置 MYSQL_ROOT_PASSWORD}@mysql:3306/knowledge_base?charset=utf8mb4
       - MILVUS_HOST=milvus-standalone
       - MILVUS_PORT=19530
       - MODEL_API_BASE=${MODEL_API_BASE:-https://api.deepseek.com/v1}
@@ -39,7 +39,7 @@ services:
     ports:
       - "3306:3306"
     environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-kb_root_pass_2026}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?请先 cp .env.example .env 并设置 MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: knowledge_base
       TZ: Asia/Shanghai
     volumes:

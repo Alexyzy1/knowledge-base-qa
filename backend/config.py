@@ -25,7 +25,7 @@ SAFETY_LLM_CHECK = os.getenv("SAFETY_LLM_CHECK", "false").lower() == "true"  # �
 SAFETY_BLOCK_REPLY = "抱歉，我无法回应包含不当内容的请求。请换一个与知识库相关的问题。"
 
 # MySQL（pymysql 同步驱动；charset=utf8mb4 支持中文）
-MYSQL_URL = os.getenv("MYSQL_URL", "mysql+pymysql://kb_user:kb_pass@127.0.0.1:3306/knowledge_base?charset=utf8mb4")
+MYSQL_URL = os.getenv("MYSQL_URL", "mysql+pymysql://user:CHANGE_ME@127.0.0.1:3306/knowledge_base?charset=utf8mb4")
 
 # ── JWT 鉴权配置 ──
 def _load_jwt_secret() -> str:

@@ -22,7 +22,11 @@ echo "Milvus 已就绪"
 # Initialize database and create admin user
 echo "--- 初始化数据库 ---"
 cd /app/backend/store
-export ADMIN_PW="${ADMIN_PASSWORD:-admin123}"
+export ADMIN_PW="${ADMIN_PASSWORD}"
+if [ -z "$ADMIN_PW" ]; then
+    echo "错误: ADMIN_PASSWORD 未设置，请在 .env 中设置"
+    exit 1
+fi
 python -c "
 import os, sys
 os.environ['ADMIN_PW'] = '${ADMIN_PW}'

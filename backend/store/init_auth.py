@@ -5,7 +5,7 @@ from sqlalchemy import create_engine, select
 from sqlalchemy.orm import Session
 from auth_models import Base, User, Whitelist, KbMember
 
-DB_URL = os.environ.get("MYSQL_URL", "mysql+pymysql://kb_user:kb_pass@127.0.0.1:3306/knowledge_base?charset=utf8mb4")
+DB_URL = os.environ.get("MYSQL_URL", "mysql+pymysql://user:CHANGE_ME@127.0.0.1:3306/knowledge_base?charset=utf8mb4")
 ADMIN_USER = os.environ.get("ADMIN_USER", "admin")
 ADMIN_PW = os.environ.get("ADMIN_PW")
 SEED_KB_IDS = [1, 2]
