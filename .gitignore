@@ -1,0 +1,63 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Virtual environments
+venv/
+.venv/
+env/
+.conda/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS junk
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Secrets & environment
+.env
+*.jwt_secret
+!.env.example
+
+# Logs
+logs/
+*.log
+
+# Node
+node_modules/
+
+# Docker volumes
+volumes/
+mysql_data/
+
+# Deploy artifacts
+*.zip
+
+# Wheels
+wheels/
+
+# Test coverage
+htmlcov/
+.coverage
+.pytest_cache/
+
+# Jupyter checkpoints
+.ipynb_checkpoints/
+
+# Backup files
+*.bak
+*.bak.*
+
+# Claude Code
+.claude/

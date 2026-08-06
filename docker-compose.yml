@@ -1,0 +1,82 @@
+services:
+  # ============================================================
+  # 应用服务
+  # ============================================================
+  app:
+    build: .
+    container_name: kb-app
+    ports:
+      - "8000:8000"
+    environment:
+      - MODEL_API_KEY=${MODEL_API_KEY}
+      - JWT_SECRET=${JWT_SECRET}
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD:-admin123}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD:-kb_root_pass_2026}
+      - MYSQL_URL=mysql+pymysql://root:${MYSQL_ROOT_PASSWORD:-kb_root_pass_2026}@mysql:3306/knowledge_base?charset=utf8mb4
+      - MILVUS_HOST=milvus-standalone
+      - MILVUS_PORT=19530
+      - MODEL_API_BASE=${MODEL_API_BASE:-https://api.deepseek.com/v1}
+      - LLM_MODEL=${LLM_MODEL:-deepseek-chat}
+      - EMBEDDING_MODEL=${EMBEDDING_MODEL:-text-embedding-3-small}
+      - EMBEDDING_BASE_URL=${EMBEDDING_BASE_URL:-https://api.openai.com/v1}
+      - EMBEDDING_API_KEY=${EMBEDDING_API_KEY:-}
+      - EMBEDDING_DIM=${EMBEDDING_DIM:-1536}
+      - ASR_ENGINE=${ASR_ENGINE:-legacy}
+      - IP_ACCESS_ENABLED=${IP_ACCESS_ENABLED:-false}
+    depends_on:
+      mysql:
+        condition: service_healthy
+      milvus-standalone:
+        condition: service_healthy
+    restart: unless-stopped
+
+  # ============================================================
+  # MySQL 8.4
+  # ============================================================
+  mysql:
+    image: mysql:8.4
+    container_name: kb-mysql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-kb_root_pass_2026}
+      MYSQL_DATABASE: knowledge_base
+      TZ: Asia/Shanghai
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    restart: unless-stopped
+
+  # ============================================================
+  # Milvus 向量数据库
+  # ============================================================
+  milvus-standalone:
+    image: milvusdb/milvus:v2.6.6
+    container_name: kb-milvus
+    command: ["milvus", "run", "standalone"]
+    environment:
+      ETCD_USE_EMBED: "true"
+      ETCD_DATA_DIR: /var/lib/milvus/etcd
+      COMMON_STORAGETYPE: local
+      DEPLOY_MODE: STANDALONE
+    ports:
+      - "19530:19530"
+      - "9091:9091"
+    volumes:
+      - milvus_data:/var/lib/milvus
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9091/healthz"]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+      start_period: 90s
+    restart: unless-stopped
+
+volumes:
+  mysql_data:
+  milvus_data:
