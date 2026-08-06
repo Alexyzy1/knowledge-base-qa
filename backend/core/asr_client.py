@@ -21,6 +21,8 @@ def parse_audio(path: str) -> str:
     由上层调用方（file_parser）捕获并抛出让 pipeline 兜底置 failed。
     """
     p = Path(path)
+    if not AUDIO_CHAT_URL:
+        raise RuntimeError("ASR 服务未配置，请设置 ASR_BASE_URL 环境变量")
     if not p.is_file():
         raise FileNotFoundError(f"音频文件不存在: {path}")
 
@@ -60,6 +62,8 @@ def parse_video(path: str, only_extract_audio: bool = True) -> str:
     only_extract_audio=True 时仅提取音频转文字（跳过视频图像识别，更快速）。
     """
     p = Path(path)
+    if not VIDEO_CHAT_URL:
+        raise RuntimeError("ASR 服务未配置，请设置 ASR_BASE_URL 环境变量")
     if not p.is_file():
         raise FileNotFoundError(f"视频文件不存在: {path}")
 

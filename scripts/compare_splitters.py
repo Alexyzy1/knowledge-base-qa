@@ -97,7 +97,7 @@ SAMPLE_MARKDOWN = """# 知识库问答系统技术文档
 
 系统使用 Docker Compose 进行容器化部署。主要容器包括：
 
-- `kb-dev`：FastAPI 应用
+- `app`：FastAPI 应用
 - `milvus`：向量数据库
 - `mysql`：关系数据库
 

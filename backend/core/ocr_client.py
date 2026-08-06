@@ -22,6 +22,9 @@ def parse_via_ocr(path: str, table_enable: bool = True, formula_enable: bool = F
     formula_enable: 是否启用公式识别
     """
     p = Path(path)
+    if not OCR_PARSE_URL:
+        logger.warning("OCR 服务未配置（OCR_PARSE_URL 为空），将抛出异常由上层降级处理")
+        raise RuntimeError("OCR 服务未配置，请设置 OCR_PARSE_URL 环境变量")
     if not p.is_file():
         raise FileNotFoundError(f"文件不存在: {path}")
 
