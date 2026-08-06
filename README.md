@@ -4,6 +4,31 @@
 
 > 技术栈：FastAPI + Milvus + MySQL + DeepSeek/Qwen/OpenAI 兼容 API
 
+## 问答流程
+
+```mermaid
+flowchart LR
+    A["📄<br/>上传文档"] --> B["✂️<br/>智能切片"]
+    B --> C["🧮<br/>向量化入库<br/>Milvus"]
+    
+    D["❓<br/>用户提问"] --> E["🔍<br/>查询增强<br/>改写 / HyDE / 多路"]
+    E --> F["📊<br/>混合检索<br/>向量 + 关键词"]
+    F --> G["📈<br/>Rerank 重排序"]
+    G --> H["🤖<br/>LLM 生成回答<br/>DeepSeek / Qwen / GPT"]
+    H --> I["💬<br/>返回答案<br/>+ 引用来源"]
+
+    C -.-> F
+
+    style A fill:#dceeb1,stroke:#000
+    style C fill:#c5b0f4,stroke:#000
+    style D fill:#f4ecd6,stroke:#000
+    style H fill:#efd4d4,stroke:#000
+    style I fill:#c8e6cd,stroke:#000
+```
+
+> **文档入库**：上传 → 切片 → Embedding → Milvus  
+> **智能问答**：提问 → 改写/扩展 → 混合检索 → Rerank → LLM 生成 → 带来源引用返回
+
 ## 功能特性
 
 - 📄 **多格式文档解析** — PDF、Word、Excel、PPT、Markdown、TXT、CSV、图片（OCR）、音视频（ASR）
